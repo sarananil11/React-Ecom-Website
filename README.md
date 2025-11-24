@@ -52,7 +52,7 @@ To enable the contact form functionality, you'll need to set up EmailJS:
 
 1. **Sign up for EmailJS** (https://www.emailjs.com/)
 2. **Create a service** - Connect your email service (Gmail, Outlook, etc.)
-3. **Create an email template** - Set up the template with variables: `{{name}}`, `{{email}}`, `{{subject}}`, `{{message}}`
+3. **Create an email template** - Set up the template with variables: `{{name}}`, `{{email}}`, `{{message}}`
 4. **Get your credentials**:
    - Service ID
    - Template ID

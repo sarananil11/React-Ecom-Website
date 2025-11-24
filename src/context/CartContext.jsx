@@ -13,20 +13,39 @@ export const useCart = () => {
 export const CartProvider = ({ children }) => {
   // Initialize state directly from localStorage to avoid race condition
   const [cartItems, setCartItems] = useState(() => {
+    // Check if we're in browser environment
+    if (typeof window === 'undefined') {
+      return [];
+    }
+    
     try {
       const savedCart = localStorage.getItem('cartItems');
       if (savedCart) {
         const parsed = JSON.parse(savedCart);
-        return Array.isArray(parsed) ? parsed : [];
+        // Validate that parsed data is an array and has valid structure
+        if (Array.isArray(parsed)) {
+          return parsed.filter(item => item && item.id && item.name && typeof item.price === 'number');
+        }
       }
     } catch (error) {
       console.error('Error loading cart from localStorage:', error);
+      // Clear corrupted data
+      try {
+        localStorage.removeItem('cartItems');
+      } catch (e) {
+        console.error('Error clearing corrupted cart data:', e);
+      }
     }
     return [];
   });
 
   // Save cart to localStorage whenever it changes
   useEffect(() => {
+    // Check if we're in browser environment
+    if (typeof window === 'undefined') {
+      return;
+    }
+    
     try {
       localStorage.setItem('cartItems', JSON.stringify(cartItems));
     } catch (error) {
